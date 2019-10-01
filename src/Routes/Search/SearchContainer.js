@@ -1,9 +1,57 @@
-import React from 'react'
-import SearchPresenter from './SearchPresenter'
-import {moviesApi, tvApi} from 'api'
+import React,{ useContext } from 'react';
+import { NomflixContext } from 'context';
+import SearchPresenter from './SearchPresenter';
+import {moviesApi, tvApi} from 'api';
+
+export default () => {
+    
+    const { searchTerm, movieResults, tvResults, changeSearchTerm,
+        changeMovieResults, changeTvResults } = useContext ( NomflixContext );
+    let loading = false;
+    let error = null;
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        if (searchTerm !== "") {
+            searchByTerm();
+        }
+    };
+
+    const updateTerm = (event) => {
+        const {
+            target: { value }
+        } = event;
+        changeSearchTerm(value);
+    };
+
+    const searchByTerm = async () => {
+        loading = true;
+        try {
+            const { data : {results : movieResults} } = await moviesApi.search(searchTerm)
+            const { data : {results : tvResults} } = await tvApi.search(searchTerm)
+            changeMovieResults(movieResults)
+            changeTvResults(tvResults)
+        } catch {
+            error = "Can't find results"
+        } finally {
+            loading = false
+        }
+    }; 
+    
+    return(
+        <SearchPresenter
+            movieResults={movieResults}
+            tvResults={tvResults}
+            loading={loading}
+            error={error}
+            searchTerm={searchTerm}
+            handleSubmit={handleSubmit}
+            updateTerm={updateTerm}
+        />
+    )
+}
 
 
-export default class extends React.Component {
+class aa extends React.Component {
     state = {
         movieResults :null,
         tvResults : null,
