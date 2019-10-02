@@ -56,7 +56,10 @@ const SearchPresenter = ({
                   imageUrl={movie.poster_path}
                   title={movie.original_title}
                   rating={movie.vote_average}
-                  year={movie.release_date.substring(0, 4)}
+                  year={movie.release_date
+                        ? movie.release_date.substring(0, 4)
+                        : ""
+                  }
                   // substring 을 이용하여 원하는 만큼의 길이를 자른다.
                   // 년도만 가져오면 되니까
                   isMovie={true}
@@ -74,7 +77,9 @@ const SearchPresenter = ({
                   imageUrl={show.poster_path}
                   title={show.original_name}
                   rating={show.vote_average}
-                  year={show.first_air_date.substring(0, 4)}
+                  year={ show.first_air_date ?
+                          show.first_air_date.substring(0, 4)
+                          : ""}
                   // substring 을 이용하여 원하는 만큼의 길이를 자른다.
                   // 년도만 가져오면 되니까
                 />

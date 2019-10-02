@@ -8,28 +8,28 @@ export const NomflixContext = React.createContext();
 const NomflixContextProvider = ({children}) => {
     
     // 초기값 ""
-    const [searchTerm, setSearchTerm] = useState("");
+    // const [searchTerm, setSearchTerm] = useState("");
 
-    const [movieResults, setMovieResults] = useState(null);
+    // const [results, setResults] = useState({movieResults: null, tvResults: null});
 
-    const [tvResults, setTvResults] = useState(null);
+    const [searchInfo, setSearchInfo] = useState({
+        movieResults: null,
+        tvResults: null,
+        searchTerm: ""
+    })
 
     const changeSearchTerm = (value) => {
-        setSearchTerm(value);
+        setSearchInfo({...searchInfo, searchTerm: value});
     }
 
-    const changeMovieResults = (value) => {
-        setMovieResults(value);
-    }
-
-    const changeTvResults = (value) => {
-        setTvResults(value);
+    const changeResults = (movieResults, tvResults) => {
+        setSearchInfo({...searchInfo, movieResults: movieResults, tvResults: tvResults});
     }
 
     return(
         <NomflixContext.Provider 
-            value={{ searchTerm, movieResults, tvResults, changeSearchTerm,
-                changeMovieResults, changeTvResults }}
+            value={{ searchInfo, changeSearchTerm,
+                changeResults }}
         >
             {children}
         </NomflixContext.Provider>
