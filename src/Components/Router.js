@@ -7,7 +7,7 @@ import Header from 'Components/Header';
 import Search from 'Routes/Search';
 import Detail from 'Routes/Detail';
 import Collections from 'Routes/Collections';
-// import TVDetail from 'Routes/TVDetail';
+
 
 export default () => (
     // github 에서 페이징할 떄는 nomflix 넣어주기
