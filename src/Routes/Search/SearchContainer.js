@@ -1,9 +1,67 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import SearchPresenter from './SearchPresenter'
 import {moviesApi, tvApi} from 'api'
+import { NomflixContext } from '../../Context';
+
+// fn형태로 
+export default () => {
+    const {searchInfo: { movieResults, tvResults, searchTerm }, onChangeSearchTerm, onChangeSearchResults} = useContext(NomflixContext);
+    let loading = false;
+    let error = null;
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        if (searchTerm !== "") {
+            searchByTerm();
+        }
+    };
+
+    const updateTerm = (event) => {
+        // console.log(event)
+        const {
+            target: { value }
+        } = event;
+        // console.log(value);
+        onChangeSearchTerm(
+            value
+        )
+    };
+
+    const searchByTerm = async () => {
+        loading = true;
+        try {
+            // throw Error(); // 에러 던져줄 때 
+            const { data : {results : movieResults} } = await moviesApi.search(searchTerm)
+            const { data : {results : tvResults} } = await tvApi.search(searchTerm)
+            onChangeSearchResults(movieResults, tvResults)
+        } catch {
+            error = "Can't find results";
+        } finally {
+            loading = false;
+        }
+    };
+
+    return (
+        <SearchPresenter
+        //앞에는 searchpresenter 에서 받는 파라미터 명
+        //뒤에는 파라미터 값
+            movieResults={movieResults}
+            tvResults={tvResults}
+            loading={loading}
+            error={error}
+            searchTerm={searchTerm}
+            handleSubmit={handleSubmit}
+            updateTerm={updateTerm}
+        />
+    );
+
+}
 
 
-export default class extends React.Component {
+
+
+
+class aa extends React.Component {
     state = {
         movieResults :null,
         tvResults : null,
